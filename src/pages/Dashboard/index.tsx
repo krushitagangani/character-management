@@ -86,7 +86,7 @@ const Index = () => {
   return (
     <div className="p-5">
       <Row className="justify-content-center">
-        <Col lg={6} xs={12}>
+        <Col lg={10} xs={12}>
           {(charactersLoading || filmsLoading) && <Loader />}
           <div className="mb-5">
             <CharacterSelect
