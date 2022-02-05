@@ -4,6 +4,8 @@ import { MoviesActionTypes, MoviesState } from "./types";
 export const INIT_STATE: MoviesState = {
   charactersList: [],
   films: [],
+  charactersLoading: false,
+  filmsLoading: false,
 };
 
 const Movies = (state = INIT_STATE, action: any) => {
@@ -15,14 +17,14 @@ const Movies = (state = INIT_STATE, action: any) => {
             ...state,
             charactersList: action.payload.data,
             isCharactersListFetched: true,
-            getCharactersListLoading: false,
+            charactersLoading: false,
           };
         case MoviesActionTypes.GET_FILMS:
           return {
             ...state,
             films: action.payload.data,
             isFilmsFetched: true,
-            getFilmsLoading: false,
+            filmsLoading: false,
           };
         default:
           return { ...state };
@@ -34,13 +36,13 @@ const Movies = (state = INIT_STATE, action: any) => {
           return {
             ...state,
             isCharactersListFetched: false,
-            getCharactersListLoading: false,
+            charactersLoading: false,
           };
         case MoviesActionTypes.GET_FILMS:
           return {
             ...state,
             isFilmsFetched: false,
-            getFilmsLoading: false,
+            filmsLoading: false,
           };
         default:
           return { ...state };
@@ -49,7 +51,7 @@ const Movies = (state = INIT_STATE, action: any) => {
     case MoviesActionTypes.GET_CHARACTERS: {
       return {
         ...state,
-        getCharactersListLoading: true,
+        charactersLoading: true,
         isCharactersListFetched: false,
       };
     }
@@ -57,7 +59,7 @@ const Movies = (state = INIT_STATE, action: any) => {
       return {
         ...state,
         isFilmsFetched: true,
-        getFilmsLoading: true,
+        filmsLoading: true,
       };
     default:
       return { ...state };

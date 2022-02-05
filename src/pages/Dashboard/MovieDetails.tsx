@@ -1,18 +1,22 @@
 import React from "react";
+import { Film } from "../../types";
 
 interface MovieDetailsProps {
-  lastYearMovie: any;
+  lastYearMovie?: Film;
 }
 
 const MovieDetails = ({ lastYearMovie }: MovieDetailsProps) => {
+  const releaseDate = lastYearMovie?.release_date
+    ? new Date(lastYearMovie?.release_date)
+    : undefined;
   return (
     <>
-      <h6 className="fw-normal">Name / Year last Movie:</h6>
+      <h6 className="fw-bold">Name / Year last Movie</h6>
       <p className="m-0 p-2 rounded bg-secondary bg-opacity-10">
-        {lastYearMovie &&
-        lastYearMovie["title"] &&
-        lastYearMovie["release_date"]
-          ? `${lastYearMovie["title"]}: ${lastYearMovie["release_date"]}`
+        {lastYearMovie && lastYearMovie["title"] && releaseDate
+          ? `${lastYearMovie["title"]}: ${releaseDate.toLocaleDateString(
+              "en-CA"
+            )}`
           : "-"}
       </p>
     </>

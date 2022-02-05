@@ -8,45 +8,37 @@ import { useRedux } from "../../hooks/index";
 import { getCharacters, getFilms } from "../../redux/actions";
 
 // components
-import MoviesList from "./MoviesList";
-import CharacterSelect from "./CharacterSelect";
-import MovieDetails from "./MovieDetails";
 import Loader from "../../components/Loader";
+import MoviesList from "./MoviesList";
+import { CharacterSelect, CharacterSelectOption } from "./CharacterSelect";
+import MovieDetails from "./MovieDetails";
+import { Film } from "../../types";
 
 const Index = () => {
   // global store
   const { dispatch, useAppSelector } = useRedux();
 
-  const { charactersList, getCharactersListLoading, films, getFilmsLoading } =
+  const { charactersList, charactersLoading, films, filmsLoading } =
     useAppSelector(state => ({
       charactersList: state.Movies.charactersList,
-      getCharactersListLoading: state.Movies.getCharactersListLoading,
+      charactersLoading: state.Movies.charactersLoading,
 
       films: state.Movies.films,
-      getFilmsLoading: state.Movies.getFilmsLoading,
+      filmsLoading: state.Movies.filmsLoading,
     }));
 
   /*
   character
   */
-  const [selectedCharacter, setSelectedCharacter] = useState<
-    any | null | undefined
-  >(null);
-  const [characterOpts, setCharacterOpts] = useState<Array<object>>([]);
+  const [characterOpts, setCharacterOpts] = useState<
+    Array<CharacterSelectOption>
+  >([]);
 
-  const onChangeCharacter = (value: any | null | undefined) => {
-    setSelectedCharacter(value);
-
+  const onChangeCharacter = (
+    value: CharacterSelectOption | null | undefined
+  ) => {
     if (value) {
-      const selectedCharacterMovies =
-        value && value["films"] ? value["films"] : [];
-      // ideally the backend should return the film id also. As we set the base url in the axios, we can not pass the whole api url to the axios, so we are extracting the Id from the given films url and pass those Ids to the redux-saga to get the films data
-      const modifiedMovies = (selectedCharacterMovies || []).map((m: any) => {
-        let result = (m || "").split("films")[1];
-        result = result.replaceAll("/", "");
-        return result;
-      });
-      dispatch(getFilms(modifiedMovies));
+      dispatch(getFilms(value.films ?? []));
     }
   };
 
@@ -54,11 +46,11 @@ const Index = () => {
   get the characters list
   */
   useEffect(() => {
-    dispatch(getCharacters("people"));
+    dispatch(getCharacters());
   }, [dispatch]);
 
   useEffect(() => {
-    const opts: Array<object> = (charactersList || []).map(
+    const opts: Array<CharacterSelectOption> = (charactersList || []).map(
       (character: any, index: number) => {
         return {
           ...character,
@@ -73,8 +65,8 @@ const Index = () => {
   /*
   movies list &  lastYear
   */
-  const [movies, setMovies] = useState<Array<any>>([]);
-  const [lastYearMovie, setLastYearMovie] = useState<null | any>();
+  const [movies, setMovies] = useState<Array<Film>>([]);
+  const [lastYearMovie, setLastYearMovie] = useState<Film | undefined>();
   useEffect(() => {
     setMovies(films);
 
@@ -95,11 +87,10 @@ const Index = () => {
     <div className="p-5">
       <Row className="justify-content-center">
         <Col lg={6} xs={12}>
-          {(getCharactersListLoading || getFilmsLoading) && <Loader />}
+          {(charactersLoading || filmsLoading) && <Loader />}
           <div className="mb-5">
             <CharacterSelect
-              selectedCharacter={selectedCharacter}
-              characterOpts={characterOpts}
+              options={characterOpts}
               onChangeCharacter={onChangeCharacter}
             />
           </div>

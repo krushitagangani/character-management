@@ -2,8 +2,8 @@ import { APIClient } from "./apiCore";
 
 const api = new APIClient();
 
-const getCharacters = (word: string, filters?: {}) => {
-  return api.get(`/${word}`, filters);
+const getCharacters = (filters?: {}) => {
+  return api.get(`/people`, filters);
 };
 
 const getFilms = (Ids: Array<string | number>) => {

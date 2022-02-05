@@ -8,7 +8,7 @@ const Topbar = () => {
     <Navbar bg="dark" expand="lg" className="text-white">
       <Container className="d-flex justify-content-center">
         <Navbar.Brand href="/" className="text-white">
-          Star Wars
+          Movie DB - Starwars
         </Navbar.Brand>
       </Container>
     </Navbar>

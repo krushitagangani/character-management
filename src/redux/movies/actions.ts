@@ -12,12 +12,11 @@ export const moviesApiResponseError = (actionType: string, error: string) => ({
   payload: { actionType, error },
 });
 
-export const getCharacters = (word: string) => ({
+export const getCharacters = () => ({
   type: MoviesActionTypes.GET_CHARACTERS,
-  payload: word,
 });
 
-export const getFilms = (Ids: Array<string | number>) => ({
+export const getFilms = (urls: Array<string>) => ({
   type: MoviesActionTypes.GET_FILMS,
-  payload: Ids,
+  payload: urls,
 });

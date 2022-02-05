@@ -1,33 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
+import { default as ReactSelect } from "react-select";
 
 // plugins
 import { Form } from "react-bootstrap";
 
 // components
-import CustomSelect from "../../components/CustomSelect";
-interface CharacterSelectProps {
-  selectedCharacter: object | null | undefined;
-  characterOpts: Array<object>;
-  onChangeCharacter: (value: object | null | undefined) => void;
-}
+import { FilmCharacter } from "../../types";
+
+export type CharacterSelectOption = FilmCharacter & {
+  value: string;
+  label?: string;
+};
+
+type CharacterSelectProps = {
+  options: Array<CharacterSelectOption>;
+  onChangeCharacter: (value: CharacterSelectOption | null | undefined) => void;
+};
 const CharacterSelect = ({
-  selectedCharacter,
-  characterOpts,
+  options,
   onChangeCharacter,
 }: CharacterSelectProps) => {
+  const [selectedCharacter, setSelectedCharacter] = useState<
+    CharacterSelectOption | null | undefined
+  >(null);
+
   return (
     <Form>
       {/* character select */}
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Character:</Form.Label>
-        <CustomSelect
+        <Form.Label className="fw-bold">Character</Form.Label>
+        <ReactSelect
           value={selectedCharacter}
-          onChange={onChangeCharacter}
-          options={characterOpts}
+          onChange={(value: CharacterSelectOption | null | undefined) => {
+            setSelectedCharacter(value);
+            onChangeCharacter(value);
+          }}
+          options={options}
         />
       </Form.Group>
     </Form>
   );
 };
 
-export default CharacterSelect;
+export { CharacterSelect };
